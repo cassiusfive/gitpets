@@ -2,8 +2,10 @@ package gitstats
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/machinebox/graphql"
 )
@@ -31,7 +33,7 @@ type QueryStatsResponse struct {
 	}
 }
 
-func GetStats(username string) GitStats {
+func GetStats(username string) (GitStats, error) {
 	client := graphql.NewClient("https://api.github.com/graphql")
 
 	query := fmt.Sprintf(`
@@ -57,7 +59,9 @@ func GetStats(username string) GitStats {
 	var response QueryStatsResponse
 	err := client.Run(context.Background(), request, &response)
 	if err != nil {
-		panic(err)
+		if strings.HasPrefix(err.Error(), "graphql: Could not resolve to a User") {
+			return GitStats{name: "", totalCommits: 0, contributedTo: 0, mergedPRs: 0}, errors.New("user not found")
+		}
 	}
 
 	return GitStats{
@@ -65,5 +69,5 @@ func GetStats(username string) GitStats {
 		totalCommits:  response.User.ContributionsCollection.TotalCommitContributions,
 		contributedTo: response.User.ContributionsCollection.ReposContributedTo,
 		mergedPRs:     response.User.MergedPRs.totalCount,
-	}
+	}, nil
 }
