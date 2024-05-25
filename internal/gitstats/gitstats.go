@@ -11,10 +11,10 @@ import (
 )
 
 type GitStats struct {
-	name          string
-	totalCommits  int
-	contributedTo int
-	mergedPRs     int
+	Name          string
+	TotalCommits  int
+	ContributedTo int
+	MergedPRs     int
 }
 
 type QueryStatsResponse struct {
@@ -60,14 +60,14 @@ func GetStats(username string) (GitStats, error) {
 	err := client.Run(context.Background(), request, &response)
 	if err != nil {
 		if strings.HasPrefix(err.Error(), "graphql: Could not resolve to a User") {
-			return GitStats{name: "", totalCommits: 0, contributedTo: 0, mergedPRs: 0}, errors.New("user not found")
+			return GitStats{Name: "", TotalCommits: 0, ContributedTo: 0, MergedPRs: 0}, errors.New("user not found")
 		}
 	}
 
 	return GitStats{
-		name:          response.User.Name,
-		totalCommits:  response.User.ContributionsCollection.TotalCommitContributions,
-		contributedTo: response.User.ContributionsCollection.ReposContributedTo,
-		mergedPRs:     response.User.MergedPRs.totalCount,
+		Name:          response.User.Name,
+		TotalCommits:  response.User.ContributionsCollection.TotalCommitContributions,
+		ContributedTo: response.User.ContributionsCollection.ReposContributedTo,
+		MergedPRs:     response.User.MergedPRs.totalCount,
 	}, nil
 }
