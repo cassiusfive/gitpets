@@ -2,6 +2,7 @@ package card
 
 import (
 	"encoding/xml"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -16,19 +17,41 @@ type CardStyles struct {
 }
 
 func Generate(w http.ResponseWriter, pet pet.Pet, styles CardStyles) error {
-	f, err := os.Open("assets/fox/1.svg")
-	if err != nil {
-		return err
-	}
-	s, err := parseSVG(f)
-	if err != nil {
-		return err
-	}
 	w.Header().Set("Content-Type", "image/svg+xml")
+
 	canvas := svg.New(w)
 	canvas.Start(400, 600)
-	placeSvg(canvas, s)
 
+	frames, err := os.ReadDir("assets/fox/")
+	if err != nil {
+		return err
+	}
+
+	fps := 2
+	frameLength := 1.0 / float64(fps)
+	duration := frameLength * float64(len(frames))
+
+	for i := range len(frames) {
+		f, err := os.Open(fmt.Sprintf("assets/fox/%d.svg", i))
+		if err != nil {
+			return err
+		}
+		s, err := parseSVG(f)
+		if err != nil {
+			return err
+		}
+
+		frameStart := float64(i) / float64(len(frames))
+		frameEnd := float64(i+1) / float64(len(frames))
+
+		canvas.Group(fmt.Sprintf(`id="frame-%d"`, i), `transform="scale(10)"`)
+		canvas.Writer.Write(s.Doc)
+		canvas.Writer.Write([]byte(fmt.Sprintf(`<animate attributeName="opacity" dur="%.2fs" values="0; 0; 1; 1; 0; 0;"
+			keyTimes="0; %.2f; %.2f; %.2f; %.2f; 1" repeatCount="indefinite" />`, duration, frameStart, frameStart+0.0001, frameEnd-0.0001, frameEnd)))
+		canvas.Gend()
+	}
+
+	canvas.End()
 	return nil
 }
 
@@ -53,21 +76,4 @@ func parseSVG(src io.Reader) (SVG, error) {
 		return SVG{}, err
 	}
 	return s, nil
-}
-
-func placeSvg(canvas *svg.SVG, s SVG) {
-	// create clip path of svg size
-	// canvas.Group(`clip-path="url(#embed)"`)
-	// canvas.ClipPath(`id="embed"`)
-	// canvas.Rect(0, 0, s.Width, s.Height)
-	// canvas.ClipEnd()
-	// // append embedded svg
-	canvas.Group(`id="frame-1"`, `transform="scale(10)"`)
-	canvas.Writer.Write(s.Doc)
-	canvas.Writer.Write([]byte(`<animate attributeName="opacity" dur="1s" values="1; 1; 0; 0;" keyTimes="0; 0.5; 0.51; 1" repeatCount="indefinite" />`))
-	canvas.Gend()
-	canvas.Group(`id="frame-2"`, `transform="scale(10)"`, `opacity="0%"`)
-	canvas.Writer.Write(s.Doc)
-	canvas.Gend()
-	canvas.End()
 }
