@@ -6,31 +6,44 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strings"
 
 	svg "github.com/ajstarks/svgo"
 	"github.com/cassiusfive/gitpets/internal/pet"
 )
 
 type CardStyles struct {
-	text       string
-	background string
+	Text       string
+	Background string
 }
 
-func Generate(w http.ResponseWriter, pet pet.Pet, styles CardStyles) error {
+func Generate(w http.ResponseWriter, p pet.Pet, styles CardStyles) error {
 	w.Header().Set("Content-Type", "image/svg+xml")
-
+	if styles.Text == "" {
+		styles.Text = "black"
+	}
 	canvas := svg.New(w)
-	canvas.Start(400, 600)
+	canvas.Start(32*5, 32*5)
+
+	width := 18
+	xpProgress := float32(p.Xp) / float32(pet.ExperienceToLevel(p.Level))
+	xpStr := fmt.Sprintf("xp: %s%s %.0f%%", strings.Repeat("▰", int(xpProgress*10)), strings.Repeat("▱", 10-int(xpProgress*10)), xpProgress*100)
+	moodStr := fmt.Sprintf("mood: %-*s", width-6, "ballin'")
+
+	canvas.Writer.Write([]byte(fmt.Sprintf(`<text x="50%%" y="25" dominant-baseline="middle" text-anchor="middle" fill="%s" style="font-family:monospace;white-space:pre">%s Lv%d</text>`, styles.Text, p.Name, p.Level)))
+	canvas.Writer.Write([]byte(fmt.Sprintf(`<text x="50%%" y="120" dominant-baseline="middle" text-anchor="middle" fill="%s" style="font-family:monospace;white-space:pre">%s</text>`, styles.Text, xpStr)))
+	canvas.Writer.Write([]byte(fmt.Sprintf(`<text x="50%%" y="140" dominant-baseline="middle" text-anchor="middle" fill="%s" style="font-family:monospace;white-space:pre">%s</text>`, styles.Text, moodStr)))
 
 	frames, err := os.ReadDir("assets/fox/")
 	if err != nil {
 		return err
 	}
 
-	fps := 2
+	fps := 3
 	frameLength := 1.0 / float64(fps)
 	duration := frameLength * float64(len(frames))
 
+	canvas.Translate(0, -50)
 	for i := range len(frames) {
 		f, err := os.Open(fmt.Sprintf("assets/fox/%d.svg", i))
 		if err != nil {
@@ -44,12 +57,13 @@ func Generate(w http.ResponseWriter, pet pet.Pet, styles CardStyles) error {
 		frameStart := float64(i) / float64(len(frames))
 		frameEnd := float64(i+1) / float64(len(frames))
 
-		canvas.Group(fmt.Sprintf(`id="frame-%d"`, i), `transform="scale(10)"`)
+		canvas.Group(fmt.Sprintf(`id="frame-%d"`, i), `transform="scale(5)"`)
 		canvas.Writer.Write(s.Doc)
 		canvas.Writer.Write([]byte(fmt.Sprintf(`<animate attributeName="opacity" dur="%.2fs" values="0; 0; 1; 1; 0; 0;"
 			keyTimes="0; %.2f; %.2f; %.2f; %.2f; 1" repeatCount="indefinite" />`, duration, frameStart, frameStart+0.0001, frameEnd-0.0001, frameEnd)))
 		canvas.Gend()
 	}
+	canvas.Gend()
 
 	canvas.End()
 	return nil

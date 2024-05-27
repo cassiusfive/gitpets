@@ -1,17 +1,14 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/cassiusfive/gitpets/internal/card"
-	"github.com/cassiusfive/gitpets/internal/gitstats"
 	"github.com/cassiusfive/gitpets/internal/pet"
 )
 
 func main() {
-	fmt.Println(gitstats.GetStats("cassiusfive"))
 	http.Handle("/api", http.HandlerFunc(api))
 	err := http.ListenAndServe(":3030", nil)
 	if err != nil {
