@@ -19,6 +19,7 @@ func main() {
 func api(w http.ResponseWriter, req *http.Request) {
 	username := req.URL.Query().Get("username")
 	petname := req.URL.Query().Get("petname")
+	theme := req.URL.Query().Get("theme")
 	if username == "" {
 		w.WriteHeader(http.StatusNotFound)
 		w.Write([]byte("Missing param: username"))
@@ -29,9 +30,15 @@ func api(w http.ResponseWriter, req *http.Request) {
 		w.Write([]byte("Missing param: petname"))
 		return
 	}
+	styles := card.CardStyles{}
+	if theme == "light" {
+		styles.Text = "black"
+	} else {
+		styles.Text = "white"
+	}
 	pet, err := pet.Create(username, petname)
 	if err != nil {
 		return
 	}
-	card.Generate(w, pet, card.CardStyles{})
+	card.Generate(w, pet, styles)
 }
