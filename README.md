@@ -13,7 +13,7 @@ made with :heart: for [Beaverhacks Spring 2024](https://spring-2024-retro.devpos
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://gitpets.fly.dev/api?username=cassiusfive&petname=lorem+ipsum&theme=dark&species=fox">
   <source media="(prefers-color-scheme: light)" srcset="https://gitpets.fly.dev/api?username=cassiusfive&petname=lorem+ipsum&theme=light&species=fox">
-  <img alt="Shows a gitpet" src="[https://gitpets.fly.dev/api?username=cassiusfive&petname=Kristofferson&species=fox](https://gitpets.fly.dev/api?username=cassiusfive&petname=lorem+ipsum&theme=dark&species=fox)" align="left" width="200px">
+  <img alt="Shows a gitpet" src="https://gitpets.fly.dev/api?username=cassiusfive&petname=lorem+ipsum&theme=dark&species=fox" align="left" width="200px">
 </picture>
 
 Copy and paste the following snippet into your README
@@ -22,7 +22,7 @@ Copy and paste the following snippet into your README
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://gitpets.fly.dev/api?username=cassiusfive&petname=lorem+ipsum&theme=dark&species=fox">
   <source media="(prefers-color-scheme: light)" srcset="https://gitpets.fly.dev/api?username=cassiusfive&petname=lorem+ipsum&theme=light&species=fox">
-  <img alt="Shows a gitpet" src="[https://gitpets.fly.dev/api?username=cassiusfive&petname=Kristofferson](https://gitpets.fly.dev/api?username=cassiusfive&petname=lorem+ipsum&theme=dark&species=fox)" width="200px">
+  <img alt="Shows a gitpet" src="https://gitpets.fly.dev/api?username=cassiusfive&petname=lorem+ipsum&theme=dark&species=fox" width="200px">
 </picture>
 
 ```
