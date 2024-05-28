@@ -34,7 +34,7 @@ func Generate(w http.ResponseWriter, p pet.Pet, styles CardStyles) error {
 	canvas.Writer.Write([]byte(fmt.Sprintf(`<text x="50%%" y="120" dominant-baseline="middle" text-anchor="middle" fill="%s" style="font-family:monospace;white-space:pre">%s</text>`, styles.Text, xpStr)))
 	canvas.Writer.Write([]byte(fmt.Sprintf(`<text x="50%%" y="140" dominant-baseline="middle" text-anchor="middle" fill="%s" style="font-family:monospace;white-space:pre">%s</text>`, styles.Text, moodStr)))
 
-	frames, err := os.ReadDir("assets/fox/")
+	frames, err := os.ReadDir("assets/wolf/")
 	if err != nil {
 		return err
 	}
@@ -45,8 +45,9 @@ func Generate(w http.ResponseWriter, p pet.Pet, styles CardStyles) error {
 
 	canvas.Translate(0, -50)
 	for i := range len(frames) {
-		f, err := os.Open(fmt.Sprintf("assets/fox/%d.svg", i))
+		f, err := os.Open(fmt.Sprintf("assets/wolf/%d.svg", i))
 		if err != nil {
+			fmt.Println(err)
 			return err
 		}
 		s, err := parseSVG(f)
