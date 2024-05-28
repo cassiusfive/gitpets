@@ -28,8 +28,15 @@ Copy and paste the following snippet into your README
 
 <br clear="both"/>
 
-> [!IMPORTANT]
-> Change `?username=` to your github username and `&petname=` to your desired pet name.
+### API Reference
+`https://gitpets.fly.dev/api`
+| Parameter      | Required | Description                | Options          |
+|----------------|----------|----------------------------|------------------|
+| **`username`** | Yes      | Github username            | N/A              |
+| **`petname`**  | Yes      | Desired name of pet        | N/A              |
+| **`species`**  | Yes      | Desired species of pet     | fox, wolf        |
+| **`theme`**    | No       | The theme for UI           | light, dark      |
+
 
 > [!NOTE]
 > Pets will gain experience based on your commits, merged PRs and unique repos you've contributed to.
