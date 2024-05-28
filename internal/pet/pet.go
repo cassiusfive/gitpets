@@ -1,25 +1,40 @@
 package pet
 
 import (
+	"errors"
 	"fmt"
+	"hash/fnv"
+	"math/rand"
+	"strconv"
 	"time"
 
 	"github.com/cassiusfive/gitpets/internal/gitstats"
 )
 
+var validSpecies = [...]string{"fox", "wolf"}
+var moods = [...]string{"happy", "sad", "locked in", "relaxed", "bored", "sleepy"}
+
 type Pet struct {
 	ownerGithub string
 	dateCreated time.Time
 	Name        string
+	Species     string
 	Level       int
 	Xp          int
+	Mood        string
 }
 
-func Create(username, petname string) (Pet, error) {
+func Create(username, petname, species string) (Pet, error) {
 	pet := Pet{
 		ownerGithub: username,
 		Name:        petname,
+		Species:     species,
+		Mood:        randomMood(username, petname),
 		dateCreated: time.Now(),
+	}
+
+	if !isValidSpecies(species) {
+		return pet, errors.New("Invalid species")
 	}
 
 	err := pet.SyncWithGit()
@@ -28,6 +43,25 @@ func Create(username, petname string) (Pet, error) {
 	}
 
 	return pet, nil
+}
+
+func isValidSpecies(species string) bool {
+	for _, s := range validSpecies {
+		if species == s {
+			return true
+		}
+	}
+	return false
+}
+
+func randomMood(username, petname string) string {
+	hash := fnv.New64()
+	hash.Write([]byte(username))
+	hash.Write([]byte(petname))
+	hash.Write([]byte(strconv.Itoa(int(time.Now().Unix() / 4000))))
+	s := rand.NewSource(int64(hash.Sum64()))
+	r := rand.New(s)
+	return moods[r.Intn(len(moods))]
 }
 
 func ExperienceToLevel(level int) int {

@@ -6,6 +6,8 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path"
+	"strconv"
 	"strings"
 
 	svg "github.com/ajstarks/svgo"
@@ -28,13 +30,15 @@ func Generate(w http.ResponseWriter, p pet.Pet, styles CardStyles) error {
 	width := 18
 	xpProgress := float32(p.Xp) / float32(pet.ExperienceToLevel(p.Level))
 	xpStr := fmt.Sprintf("xp: %s%s %.0f%%", strings.Repeat("▰", int(xpProgress*10)), strings.Repeat("▱", 10-int(xpProgress*10)), xpProgress*100)
-	moodStr := fmt.Sprintf("mood: %-*s", width-6, "ballin'")
+	moodStr := fmt.Sprintf("mood: %-*s", width-6, p.Mood)
 
-	canvas.Writer.Write([]byte(fmt.Sprintf(`<text x="50%%" y="25" dominant-baseline="middle" text-anchor="middle" fill="%s" style="font-family:monospace;white-space:pre">%s Lv%d</text>`, styles.Text, p.Name, p.Level)))
-	canvas.Writer.Write([]byte(fmt.Sprintf(`<text x="50%%" y="120" dominant-baseline="middle" text-anchor="middle" fill="%s" style="font-family:monospace;white-space:pre">%s</text>`, styles.Text, xpStr)))
-	canvas.Writer.Write([]byte(fmt.Sprintf(`<text x="50%%" y="140" dominant-baseline="middle" text-anchor="middle" fill="%s" style="font-family:monospace;white-space:pre">%s</text>`, styles.Text, moodStr)))
+	canvas.Writer.Write([]byte(fmt.Sprintf(`<text x="50%%" y="25" dominant-baseline="middle" text-anchor="middle" fill="%s" style="font-family:'Courier New',monospace;font-size:0.8rem;font-weight:bold;white-space:pre">%s Lv%d</text>`, styles.Text, p.Name, p.Level)))
+	canvas.Writer.Write([]byte(fmt.Sprintf(`<text x="50%%" y="130" dominant-baseline="middle" text-anchor="middle" fill="%s" style="font-family:'Courier New',monospace;font-size:0.8rem;white-space:pre">%s</text>`, styles.Text, xpStr)))
+	canvas.Writer.Write([]byte(fmt.Sprintf(`<text x="50%%" y="150" dominant-baseline="middle" text-anchor="middle" fill="%s" style="font-family:'Courier New',monospace;font-size:0.8rem;white-space:pre">%s</text>`, styles.Text, moodStr)))
 
-	frames, err := os.ReadDir("assets/wolf/")
+	speciesDir := path.Join("assets", p.Species)
+	fmt.Printf("speciesDir: %vn", speciesDir)
+	frames, err := os.ReadDir(speciesDir)
 	if err != nil {
 		return err
 	}
@@ -43,9 +47,9 @@ func Generate(w http.ResponseWriter, p pet.Pet, styles CardStyles) error {
 	frameLength := 1.0 / float64(fps)
 	duration := frameLength * float64(len(frames))
 
-	canvas.Translate(0, -50)
+	canvas.Translate(0, -40)
 	for i := range len(frames) {
-		f, err := os.Open(fmt.Sprintf("assets/wolf/%d.svg", i))
+		f, err := os.Open(path.Join(speciesDir, strconv.Itoa(i)+".svg"))
 		if err != nil {
 			fmt.Println(err)
 			return err
