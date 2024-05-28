@@ -11,19 +11,20 @@ made with :heart: for [Beaverhacks Spring 2024](https://spring-2024-retro.devpos
 ## Usage
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://gitpets.fly.dev/api?username=cassiusfive&petname=lorem+ipsum&theme=dark">
-  <source media="(prefers-color-scheme: light)" srcset="https://gitpets.fly.dev/api?username=cassiusfive&petname=lorem+ipsum&theme=light">
-  <img alt="Shows a gitpet" src="[https://gitpets.fly.dev/api?username=cassiusfive&petname=Kristofferson](https://gitpets.fly.dev/api?username=cassiusfive&petname=lorem+ipsum&theme=dark)" align="left" width="200px" padding-top="100px">
+  <source media="(prefers-color-scheme: dark)" srcset="https://gitpets.fly.dev/api?username=cassiusfive&petname=lorem+ipsum&theme=dark&species=fox">
+  <source media="(prefers-color-scheme: light)" srcset="https://gitpets.fly.dev/api?username=cassiusfive&petname=lorem+ipsum&theme=light&species=fox">
+  <img alt="Shows a gitpet" src="[https://gitpets.fly.dev/api?username=cassiusfive&petname=Kristofferson](https://gitpets.fly.dev/api?username=cassiusfive&petname=lorem+ipsum&theme=dark&species=fox)" align="left" width="200px">
 </picture>
 
 Copy and paste the following snippet into your README
 
 ```md
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://gitpets.fly.dev/api?username=cassiusfive&petname=lorem+ipsum&theme=dark">
-  <source media="(prefers-color-scheme: light)" srcset="https://gitpets.fly.dev/api?username=cassiusfive&petname=lorem+ipsum&theme=light">
-  <img alt="Shows a gitpet" src="https://gitpets.fly.dev/api?username=cassiusfive&petname=lorem+ipsum&theme=dark" width="200px" padding-top="100px">
+  <source media="(prefers-color-scheme: dark)" srcset="https://gitpets.fly.dev/api?username=cassiusfive&petname=lorem+ipsum&theme=dark&species=fox">
+  <source media="(prefers-color-scheme: light)" srcset="https://gitpets.fly.dev/api?username=cassiusfive&petname=lorem+ipsum&theme=light&species=fox">
+  <img alt="Shows a gitpet" src="[https://gitpets.fly.dev/api?username=cassiusfive&petname=Kristofferson](https://gitpets.fly.dev/api?username=cassiusfive&petname=lorem+ipsum&theme=dark&species=fox)" align="left" width="200px">
 </picture>
+
 ```
 
 <br clear="both"/>
