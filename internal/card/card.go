@@ -29,12 +29,12 @@ func Generate(w http.ResponseWriter, p pet.Pet, styles CardStyles) error {
 
 	width := 18
 	xpProgress := float32(p.Xp) / float32(pet.ExperienceToLevel(p.Level))
-	xpStr := fmt.Sprintf("xp: %s%s %.0f%%", strings.Repeat("▰", int(xpProgress*10)), strings.Repeat("▱", 10-int(xpProgress*10)), xpProgress*100)
+	xpStr := fmt.Sprintf("xp: %s%s %.0f%%", strings.Repeat("█", int(xpProgress*10)), strings.Repeat("░", 10-int(xpProgress*10)), xpProgress*100)
 	moodStr := fmt.Sprintf("mood: %-*s", width-6, p.Mood)
 
-	canvas.Writer.Write([]byte(fmt.Sprintf(`<text x="50%%" y="25" dominant-baseline="middle" text-anchor="middle" fill="%s" style="font-family:'DejaVu Sans Mono',monospace;font-size:0.8rem;font-weight:bold;white-space:pre">%s Lv%d</text>`, styles.Text, p.Name, p.Level)))
-	canvas.Writer.Write([]byte(fmt.Sprintf(`<text x="50%%" y="130" dominant-baseline="middle" text-anchor="middle" fill="%s" style="font-family:'DejaVu Sans Mono',monospace;font-size:0.8rem;white-space:pre">%s</text>`, styles.Text, xpStr)))
-	canvas.Writer.Write([]byte(fmt.Sprintf(`<text x="50%%" y="150" dominant-baseline="middle" text-anchor="middle" fill="%s" style="font-family:'DejaVu Sans Mono',monospace;font-size:0.8rem;white-space:pre">%s</text>`, styles.Text, moodStr)))
+	canvas.Writer.Write([]byte(fmt.Sprintf(`<text x="50%%" y="25" dominant-baseline="middle" text-anchor="middle" fill="%s" style="font-family:'Courier',monospace;font-size:0.8rem;font-weight:bold;white-space:pre">%s Lv%d</text>`, styles.Text, p.Name, p.Level)))
+	canvas.Writer.Write([]byte(fmt.Sprintf(`<text x="50%%" y="130" dominant-baseline="middle" text-anchor="middle" fill="%s" style="font-family:'Courier',monospace;font-size:0.8rem;white-space:pre">%s</text>`, styles.Text, xpStr)))
+	canvas.Writer.Write([]byte(fmt.Sprintf(`<text x="50%%" y="150" dominant-baseline="middle" text-anchor="middle" fill="%s" style="font-family:'Courier',monospace;font-size:0.8rem;white-space:pre">%s</text>`, styles.Text, moodStr)))
 
 	speciesDir := path.Join("assets", p.Species)
 	fmt.Printf("speciesDir: %vn", speciesDir)
