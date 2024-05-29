@@ -1,4 +1,4 @@
-# gitpets 
+# gitpets
 
 ### Virtual pets for your README!
 
@@ -35,7 +35,7 @@ Copy and paste the following snippet into your README
 |----------------|----------|----------------------------|------------------|
 | **`username`** | Yes      | Github username            | N/A              |
 | **`petname`**  | Yes      | Desired name of pet        | N/A              |
-| **`species`**  | Yes      | Desired species of pet     | fox, wolf        |
+| **`species`**  | Yes      | Desired species of pet     | fox, wolf, bunny |
 | **`theme`**    | No       | The theme for UI           | light, dark      |
 
 
@@ -51,7 +51,7 @@ git clone https://github.com/cassiusfive/gitpets.git
 ```
 
 2. Get environment variables
-  
+
 ```sh
 cp .env.example .env
 ```
@@ -62,7 +62,6 @@ cp .env.example .env
 
 3. Start the project
 
-```sh 
+```sh
 docker compose up -d
 ```
-

@@ -11,7 +11,7 @@ import (
 	"github.com/cassiusfive/gitpets/internal/gitstats"
 )
 
-var validSpecies = [...]string{"fox", "wolf"}
+var validSpecies = [...]string{"fox", "wolf", "bunny"}
 var moods = [...]string{"happy", "sad", "locked in", "relaxed", "bored", "sleepy"}
 
 type Pet struct {
